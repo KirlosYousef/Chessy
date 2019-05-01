@@ -29,8 +29,7 @@ public class ChessApp extends Application {
     //new groups to collect tiles and pieces
     private Group tileGroup = new Group();
     private Group pieceGroup = new Group();
-    Stage window;
-    Scene playerNameScene, gameScene;
+
 
     /**
      * Creates a pane with size the fits the number of tiles * it's size
@@ -82,39 +81,48 @@ public class ChessApp extends Application {
      * @see #makePiece(PieceType, int, int)
      */
     private MoveResult tryMove(Piece piece, int newX, int newY) {
-        if (board[newX][newY].hasPiece()) { // if the the new cell is not empty, do not move
-            return new MoveResult(MoveType.NONE);
-        }
-
         //get the old x and y coordinates
         int x0 = toBoard(piece.getOldX());
         int y0 = toBoard(piece.getOldY());
 
-        if (!board[newX][newY].hasPiece()) //Check if the new cell is empty
+        if (board[newX][newY].hasPiece()) { // if the the new cell is not empty, do not move
+            return new MoveResult(MoveType.NONE);
+        } else  //Check if the new cell is empty
         {
-            if (piece.getType().name().equals("ROOK")) {  //if the piece to move is a rook
-                if (x0 == newX) {                           //and the new cell to take is in same column
-                    return new MoveResult(MoveType.MOVE);//then make the move
-                } else if (y0 == newY) {                            //if the new cell to take is in the same row
-                    if (newX > x0) {                             //check if it is moving to the right
-                        if (!board[x0 + 1][y0].hasPiece()) {     //then check if the middle cell doesn't has piece
-                            return new MoveResult(MoveType.MOVE);//then make the move
-                        }
-                    } else if (newX < x0) {                           //check if it is moving to the left
-                        if (!board[x0 - 1][y0].hasPiece()) {        //then check if the middle cell doesn't has piece
-                            return new MoveResult(MoveType.MOVE);   //then make the move
+            switch (piece.getType().name()) {
+                case "KING":  //if the piece to move is a king
+                {
+                    if (((newX == x0 + 1 || newX == x0 - 1)) && Math.abs(newY - y0) <= 1 ||
+                            (newY == y0 + 1 || newY == y0 - 1) && Math.abs(newX - x0) <= 1) {//and the new cell to take is one step far
+                        return new MoveResult(MoveType.MOVE);       //then make the move
+                    }
+                    break;
+                }
+                case "BISHOP": //if the piece to move is a bishop
+                {
+                    if ((newX == x0 + 1 || newX == x0 - 1) && (newY == y0 + 1 || newY == y0 - 1)) { //and the new cell to take is in same diagonal
+                        return new MoveResult(MoveType.MOVE);       //then make the move
+                    }
+                    break;
+                }
+                case "ROOK": //if the piece to move is a rook
+                {
+                    if (x0 == newX) {                           //and the new cell to take is in same column
+                        return new MoveResult(MoveType.MOVE);//then make the move
+                    } else if (y0 == newY) {                            //if the new cell to take is in the same row
+                        if (newX > x0) {                             //check if it is moving to the right
+                            if (!board[x0 + 1][y0].hasPiece()) {     //then check if the middle cell doesn't has piece
+                                return new MoveResult(MoveType.MOVE);//then make the move
+                            }
+                        } else {                           //check if it is moving to the left
+                            if (!board[x0 - 1][y0].hasPiece()) {        //then check if the middle cell doesn't has piece
+                                return new MoveResult(MoveType.MOVE);   //then make the move
+                            }
                         }
                     }
+                    break;
                 }
-            } else if (piece.getType().name().equals("BISHOP")) {  //if the piece to move is a bishop
-                if ((newX == x0 + 1 || newX == x0 - 1) && (newY == y0 + 1 || newY == y0 - 1)) { //and the new cell to take is in same diagonal
-                    return new MoveResult(MoveType.MOVE);       //then make the move
-                }
-            } else if (piece.getType().name().equals("KING")) {    //if the piece to move is a king
-                if (((newX == x0 + 1 || newX == x0 - 1)) && Math.abs(newY - y0) <= 1 ||
-                        (newY == y0 + 1 || newY == y0 - 1) && Math.abs(newX - x0) <= 1) {//and the new cell to take is one step far
-                    return new MoveResult(MoveType.MOVE);       //then make the move
-                }
+
             }
         }
         return new MoveResult(MoveType.NONE);
@@ -133,11 +141,14 @@ public class ChessApp extends Application {
     /**
      * Implement the game with the PlayerName scene
      * then the Game scene
+     *
      * @see #createGame()
-     * @throws Exception in case of wrong data
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+        Stage window;
+//        Scene playerNameScene;
+        Scene gameScene = new Scene(createGame());
         window = primaryStage;
 
         Label entNameLabel = new Label("Please enter your name: ");
@@ -149,7 +160,8 @@ public class ChessApp extends Application {
 
         Button enterButton = new Button("Enter");
         enterButton.setOnAction(e -> { //When click the button, check if the textfield is not empty
-            if ((!nameTextField.getCharacters().toString().equals(""))) {
+            String name = nameTextField.getCharacters().toString();
+            if ((!name.equals(""))) {
                 window.setScene(gameScene);
             } else {
                 wrongInputLabel.setVisible(true);
@@ -162,9 +174,9 @@ public class ChessApp extends Application {
         playerNameLayout.setPadding(new Insets(50, 0, 0, 25));
 
         playerNameLayout.getChildren().addAll(entNameLabel, nameTextField, enterButton, wrongInputLabel);
-        playerNameScene = new Scene(playerNameLayout, 300, 200);
+        Scene playerNameScene = new Scene(playerNameLayout, 300, 200);
 
-        gameScene = new Scene(createGame());
+//        gameScene = new Scene(createGame());
         window.setTitle("ChessApp");
         window.setScene(playerNameScene);
         window.show();
@@ -206,11 +218,6 @@ public class ChessApp extends Application {
         return piece;
     }
 
-    /**
-     * main
-     *
-     * @param args
-     */
     public static void main(String[] args) {
         launch(args);
     }
