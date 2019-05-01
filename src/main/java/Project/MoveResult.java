@@ -12,8 +12,7 @@ public class MoveResult {
     }
 
     /**
-     * Gets the type and set it
-     * @param type
+     * @param type Sets the type
      */
     public MoveResult(MoveType type){
         this.type = type;

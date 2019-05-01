@@ -30,6 +30,7 @@ public class ChessApp extends Application {
     private Group tileGroup = new Group();
     private Group pieceGroup = new Group();
 
+    private Stage window;
 
     /**
      * Creates a pane with size the fits the number of tiles * it's size
@@ -40,7 +41,6 @@ public class ChessApp extends Application {
     private Parent createGame() {
         Pane root = new Pane();
         root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
-
 
         root.getChildren().addAll(tileGroup, pieceGroup);
 
@@ -125,6 +125,7 @@ public class ChessApp extends Application {
 
             }
         }
+
         return new MoveResult(MoveType.NONE);
     }
 
@@ -146,8 +147,6 @@ public class ChessApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        Stage window;
-//        Scene playerNameScene;
         Scene gameScene = new Scene(createGame());
         window = primaryStage;
 
@@ -176,9 +175,10 @@ public class ChessApp extends Application {
         playerNameLayout.getChildren().addAll(entNameLabel, nameTextField, enterButton, wrongInputLabel);
         Scene playerNameScene = new Scene(playerNameLayout, 300, 200);
 
-//        gameScene = new Scene(createGame());
+
         window.setTitle("ChessApp");
         window.setScene(playerNameScene);
+        window.setResizable(false);
         window.show();
     }
 
@@ -195,27 +195,65 @@ public class ChessApp extends Application {
         Piece piece = new Piece(type, x, y);
 
         piece.setOnMouseReleased(e -> {             //when releasing the mouse
-            int newX = toBoard(piece.getLayoutX());
-            int newY = toBoard(piece.getLayoutY());
 
-            MoveResult result = tryMove(piece, newX, newY);
+            // check if the mouse released out side the window then abort the movement
+            Boolean inSize = toBoard(piece.getLayoutX()) <= 2 && toBoard(piece.getLayoutX()) >= 0
+                    && toBoard(piece.getLayoutY()) <= 1 && toBoard(piece.getLayoutY()) >= 0;
 
-            int x0 = toBoard(piece.getOldX());
-            int y0 = toBoard(piece.getOldY());
+            if (!inSize) {
+                piece.abortMove();
+            } else {
+                int newX = toBoard(piece.getLayoutX());
+                int newY = toBoard(piece.getLayoutY());
 
-            switch (result.getType()) { //check the return result
-                case NONE:
-                    piece.abortMove(); //if it's none then call abortMove() which returns the piece back(Not to move)
-                    break;
-                case MOVE:
-                    piece.move(newX, newY);                  //if it's move then move it to the new coordinates
-                    board[x0][y0].setPiece(null);            //make the old cell empty
-                    board[newX][newY].setPiece(piece);       //take the new cell
-                    break;
+                MoveResult result = tryMove(piece, newX, newY);
+
+                int x0 = toBoard(piece.getOldX());
+                int y0 = toBoard(piece.getOldY());
+
+                switch (result.getType()) { //check the return result
+                    case NONE: {
+                        piece.abortMove(); //if it's none then call abortMove() which returns the piece back(Not to move)
+                        break;
+                    }
+                    case MOVE: {
+                        piece.move(newX, newY);                  //if it's move then move it to the new coordinates
+                        board[x0][y0].setPiece(null);            //make the old cell empty
+                        board[newX][newY].setPiece(piece);       //take the new cell
+                        if (isGoal())
+                            Goal();
+                        break;
+                    }
+                }
             }
         });
 
         return piece;
+    }
+
+    /**
+     * @return if the current state is a goal or not
+     */
+    private Boolean isGoal() {
+        if (!board[2][0].hasPiece()) {
+            return board[0][0].getPiece().getType().name().equals("BISHOP")
+                    && board[1][0].getPiece().getType().name().equals("BISHOP")
+                    && board[2][1].getPiece().getType().name().equals("KING");
+        }
+        return false;
+    }
+
+    /**
+     * This function is responsible about what happens when reaches the goal state
+     */
+    private void Goal() {
+        Label winner = new Label("You made it!");
+        VBox winnerLayout = new VBox();
+        winnerLayout.setPadding(new Insets(80, 0, 0, 110));
+        winnerLayout.getChildren().add(winner);
+        Scene madeIt = new Scene(winnerLayout, 300, 200);
+        window.setScene(madeIt);
+        window.show();
     }
 
     public static void main(String[] args) {

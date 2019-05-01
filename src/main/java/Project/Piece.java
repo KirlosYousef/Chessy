@@ -10,13 +10,13 @@ import static Project.ChessApp.TILE_SIZE;
  *Contains the image and the information about the piece
  */
 public class Piece extends StackPane {
-    private Image image;
+
     private PieceType type;
 
     private double mouseX, mouseY;
     private double oldX, oldY;
 
-    private ImageView imageView = new ImageView();
+
 
     /**
      * @return the type of the piece
@@ -46,19 +46,17 @@ public class Piece extends StackPane {
      */
     public Piece(PieceType type, int x, int y) {
         this.type = type;
-
+        ImageView imageView = new ImageView();
+        Image image;
         move(x, y);
 
-        image = new Image(type == PieceType.KING ? "file:src/main/java/ChessPiece/White_King.png" :
-                (type == PieceType.BISHOP ? "file:src/main/java/ChessPiece/White_Bishop.png" :
-                        "file:src/main/java/ChessPiece/White_Rook.png"));
+        String kingImg = "/White_King.png";
+        String bishopImg = "/White_Bishop.png";
+        String rookImg = "/White_Rook.png";
+
+        image = new Image(type == PieceType.KING ? kingImg : (type == PieceType.BISHOP ? bishopImg : rookImg));
 
         imageView.setImage(image);
-//        imageView.fitHeightProperty();
-//        imageView.fitWidthProperty();
-//        imageView.setPreserveRatio(true);
-//        imageView.setSmooth(true);
-//        imageView.setCache(true);
         imageView.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3 * 2) / 2);
         imageView.setTranslateY((TILE_SIZE - TILE_SIZE * 0.3 * 2) / 2);
         getChildren().add(imageView);
@@ -67,9 +65,9 @@ public class Piece extends StackPane {
             mouseX = e.getSceneX();
             mouseY = e.getSceneY();
         });
+
         setOnMouseDragged(e -> {
-            relocate(e.getSceneX() - mouseX + oldX,
-                    e.getSceneY() - mouseY + oldY);
+            relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
         });
     }
 
