@@ -1,19 +1,22 @@
 package Project;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static javafx.scene.paint.Color.WHITE;
 
@@ -30,6 +33,8 @@ public class ChessBoard extends Pane {
     private Group tileGroup = new Group();
     private Group pieceGroup = new Group();
     private int numOfMoves;
+    private Database database = new Database();
+
 
     public Stage getWindow() {
         return window;
@@ -153,7 +158,6 @@ public class ChessBoard extends Pane {
         return new MoveResult(MoveType.NONE);
     }
 
-
     /**
      * to change the pixels position to coordinates
      *
@@ -233,12 +237,34 @@ public class ChessBoard extends Pane {
      */
     private void Goal() {
         player.setScore((int) ((numOfMoves / Float.valueOf(timer.getText())) * 100));
+        database.addToDatabase(player);
+
         Label winner = new Label("You made it " + player.getName() + ", and your score is: " + player.getScore());
+        Label top10 = new Label("Top 10 players:");
         winner.setBackground(Background.EMPTY);
-        HBox winnerBox = new HBox();
-        winnerBox.getChildren().add(winner);
+        VBox winnerBox = new VBox();
+        VBox vContainer = new VBox();
+        HBox dataContainer = new HBox();
+        VBox names = new VBox();
+        VBox scores = new VBox();
+
+        vContainer.setSpacing(5);
+        vContainer.setPadding(new Insets(5, 0, 0, 0));
+
+        database.getData().forEach(player1 -> names.getChildren().add(new Label(player1.getName())));
+        database.getData().forEach(player1 -> scores.getChildren().add(new Label(String.valueOf(player1.getScore()))));
+
+        dataContainer.getChildren().addAll(names,scores);
+        dataContainer.setSpacing(10);
+        dataContainer.setAlignment(Pos.CENTER);
+
+        winnerBox.getChildren().addAll(winner, top10);
         winnerBox.setAlignment(Pos.CENTER);
-        Scene madeIt = new Scene(winnerBox, 300, 200);
+        winnerBox.setSpacing(2);
+
+        vContainer.getChildren().addAll(winnerBox,dataContainer);
+        Scene madeIt = new Scene(vContainer, 300, 220);
+
 
         window.setScene(madeIt);
         window.show();
@@ -276,4 +302,7 @@ public class ChessBoard extends Pane {
         playerLayout.getChildren().addAll(entNameLabel, nameTextField, enterButton, wrongInputLabel);
         return new Scene(playerLayout, 300, 200);
     }
+
+
+
 }

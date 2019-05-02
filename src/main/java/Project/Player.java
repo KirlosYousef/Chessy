@@ -34,4 +34,12 @@ public class Player {
     public void setScore(int score) {
         this.score = score;
     }
+
+//    private Player(String fName, String lName, String email) {
+//        this.firstName = new SimpleStringProperty(fName);
+//        this.lastName = new SimpleStringProperty(lName);
+//        this.email = new SimpleStringProperty(email);
+//    }
+
+
 }
