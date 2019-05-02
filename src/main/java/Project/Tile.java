@@ -40,10 +40,10 @@ public class Tile extends Rectangle {
      * @param y the y coordinate
      */
     public Tile(boolean light, int x, int y){
-        setWidth(ChessApp.TILE_SIZE);
-        setHeight(ChessApp.TILE_SIZE);
+        setWidth(ChessBoard.TILE_SIZE);
+        setHeight(ChessBoard.TILE_SIZE);
 
-        relocate(x * ChessApp.TILE_SIZE, y * ChessApp.TILE_SIZE);
+        relocate(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE);
 
         setFill(light ? Color.WHITE : Color.GRAY);
     }

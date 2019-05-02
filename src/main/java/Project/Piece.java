@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
-import static Project.ChessApp.TILE_SIZE;
+import static Project.ChessBoard.TILE_SIZE;
 
 /**
  *Contains the image and the information about the piece
