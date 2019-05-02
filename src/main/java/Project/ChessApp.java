@@ -1,16 +1,19 @@
 package Project;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import static javafx.scene.paint.Color.WHITE;
 
 /**
  * 3*2 ChessApp
@@ -24,13 +27,20 @@ public class ChessApp extends Application {
     public static final int WIDTH = 3;
     public static final int HEIGHT = 2;
 
+    private int score;
+    private Stage window;
+    private String playerName;
+    private int numOfMoves = 0;
+    private Label timer = new Label("0");
     private Tile[][] board = new Tile[WIDTH][HEIGHT]; //make a tile array which represents the board cells
 
     //new groups to collect tiles and pieces
     private Group tileGroup = new Group();
     private Group pieceGroup = new Group();
 
-    private Stage window;
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     /**
      * Creates a pane with size the fits the number of tiles * it's size
@@ -40,10 +50,32 @@ public class ChessApp extends Application {
      */
     private Parent createGame() {
         Pane root = new Pane();
-        root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
+        long startTime = System.currentTimeMillis();
+        Label timerLabel = new Label("Time: ");
 
-        root.getChildren().addAll(tileGroup, pieceGroup);
+        Label movesLabel = new Label("Moves: ");
+        Label moves = new Label("0");
+        timer.setTextFill(WHITE);
+        timerLabel.setTextFill(WHITE);
+        movesLabel.setTextFill(WHITE);
+        moves.setTextFill(WHITE);
+        HBox timerBox = new HBox();
+        HBox movesBox = new HBox();
+        timerBox.getChildren().addAll(timerLabel, timer);
+        movesBox.getChildren().addAll(movesLabel, moves);
+        movesBox.setTranslateX(237);
 
+        new AnimationTimer() { //To continue updating the timer and moves labels
+            @Override
+            public void handle(long now) {
+                long elapsedMillis = System.currentTimeMillis() - startTime;
+                timer.setText(Long.toString(elapsedMillis / 1000));
+                moves.setText(String.valueOf(numOfMoves));
+            }
+        }.start();
+
+
+        root.getChildren().addAll(tileGroup, pieceGroup, timerBox, movesBox);
 
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
@@ -77,7 +109,7 @@ public class ChessApp extends Application {
      * @param piece is the piece to move
      * @param newX  the x coordinate of the new cell
      * @param newY  the y coordinate of the new cell
-     * @return a result to make the move according to it
+     * @return a score to make the move according to it
      * @see #makePiece(PieceType, int, int)
      */
     private MoveResult tryMove(Piece piece, int newX, int newY) {
@@ -125,7 +157,6 @@ public class ChessApp extends Application {
 
             }
         }
-
         return new MoveResult(MoveType.NONE);
     }
 
@@ -140,17 +171,27 @@ public class ChessApp extends Application {
     }
 
     /**
-     * Implement the game with the PlayerName scene
+     * Implement the game with the Playername scene
      * then the Game scene
      *
      * @see #createGame()
      */
     @Override
     public void start(Stage primaryStage) {
-        Scene gameScene = new Scene(createGame());
         window = primaryStage;
+        window.setTitle("ChessApp");
+        window.setScene(playerScene());
+        window.setResizable(false);
+        window.show();
+    }
 
-        Label entNameLabel = new Label("Please enter your name: ");
+    /**
+     * @return the first scene of the player name
+     */
+    private Scene playerScene() {
+
+        Scene gameScene = new Scene(createGame());
+        Label entNameLabel = new Label("Please enter your playerName: ");
         Label wrongInputLabel = new Label("Wrong input!");
         wrongInputLabel.setVisible(false);
 
@@ -159,8 +200,8 @@ public class ChessApp extends Application {
 
         Button enterButton = new Button("Enter");
         enterButton.setOnAction(e -> { //When click the button, check if the textfield is not empty
-            String name = nameTextField.getCharacters().toString();
-            if ((!name.equals(""))) {
+            playerName = nameTextField.getCharacters().toString();
+            if ((!playerName.equals(""))) {
                 window.setScene(gameScene);
             } else {
                 wrongInputLabel.setVisible(true);
@@ -168,18 +209,12 @@ public class ChessApp extends Application {
         });
 
         //arranging the objects on the screen
-        VBox playerNameLayout = new VBox();
-        playerNameLayout.setSpacing(10);
-        playerNameLayout.setPadding(new Insets(50, 0, 0, 25));
+        VBox playerLayout = new VBox();
+        playerLayout.setSpacing(10);
+        playerLayout.setPadding(new Insets(50, 0, 0, 25));
 
-        playerNameLayout.getChildren().addAll(entNameLabel, nameTextField, enterButton, wrongInputLabel);
-        Scene playerNameScene = new Scene(playerNameLayout, 300, 200);
-
-
-        window.setTitle("ChessApp");
-        window.setScene(playerNameScene);
-        window.setResizable(false);
-        window.show();
+        playerLayout.getChildren().addAll(entNameLabel, nameTextField, enterButton, wrongInputLabel);
+        return new Scene(playerLayout, 300, 200);
     }
 
     /**
@@ -197,7 +232,7 @@ public class ChessApp extends Application {
         piece.setOnMouseReleased(e -> {             //when releasing the mouse
 
             // check if the mouse released out side the window then abort the movement
-            Boolean inSize = toBoard(piece.getLayoutX()) <= 2 && toBoard(piece.getLayoutX()) >= 0
+            boolean inSize = toBoard(piece.getLayoutX()) <= 2 && toBoard(piece.getLayoutX()) >= 0
                     && toBoard(piece.getLayoutY()) <= 1 && toBoard(piece.getLayoutY()) >= 0;
 
             if (!inSize) {
@@ -211,7 +246,7 @@ public class ChessApp extends Application {
                 int x0 = toBoard(piece.getOldX());
                 int y0 = toBoard(piece.getOldY());
 
-                switch (result.getType()) { //check the return result
+                switch (result.getType()) { //check the return score
                     case NONE: {
                         piece.abortMove(); //if it's none then call abortMove() which returns the piece back(Not to move)
                         break;
@@ -220,14 +255,17 @@ public class ChessApp extends Application {
                         piece.move(newX, newY);                  //if it's move then move it to the new coordinates
                         board[x0][y0].setPiece(null);            //make the old cell empty
                         board[newX][newY].setPiece(piece);       //take the new cell
+                        numOfMoves++;
+
                         if (isGoal())
                             Goal();
                         break;
                     }
                 }
             }
-        });
 
+
+        });
         return piece;
     }
 
@@ -247,17 +285,16 @@ public class ChessApp extends Application {
      * This function is responsible about what happens when reaches the goal state
      */
     private void Goal() {
-        Label winner = new Label("You made it!");
-        VBox winnerLayout = new VBox();
-        winnerLayout.setPadding(new Insets(80, 0, 0, 110));
-        winnerLayout.getChildren().add(winner);
-        Scene madeIt = new Scene(winnerLayout, 300, 200);
+        score = (int) ((numOfMoves / Float.valueOf(timer.getText())) * 100);
+        Label winner = new Label("You made it " + playerName + ", and your score is: " + score);
+        winner.setBackground(Background.EMPTY);
+        HBox winnerBox = new HBox();
+        winnerBox.getChildren().add(winner);
+        winnerBox.setAlignment(Pos.CENTER);
+        Scene madeIt = new Scene(winnerBox, 300, 200);
+
         window.setScene(madeIt);
         window.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 
