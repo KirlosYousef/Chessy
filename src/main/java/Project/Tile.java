@@ -32,10 +32,7 @@ public class Tile extends Rectangle {
         this.piece = piece;
     }
 
-//    public void removePiece(Piece piece){this.piece = piece;
-//    hasPiece() = false;
-//    }
-//
+
     /**
      * To make the tile with width, height, location and color
      * @param light if it is a white cell

@@ -27,9 +27,8 @@ public class ChessApp extends Application {
     public static final int WIDTH = 3;
     public static final int HEIGHT = 2;
 
-    private int score;
+    private Player player = new Player();
     private Stage window;
-    private String playerName;
     private int numOfMoves = 0;
     private Label timer = new Label("0");
     private Tile[][] board = new Tile[WIDTH][HEIGHT]; //make a tile array which represents the board cells
@@ -104,7 +103,7 @@ public class ChessApp extends Application {
     }
 
     /**
-     * A function which is responsible about the possibility of movement
+     * A method which is responsible about the possibility of movement
      *
      * @param piece is the piece to move
      * @param newX  the x coordinate of the new cell
@@ -171,7 +170,7 @@ public class ChessApp extends Application {
     }
 
     /**
-     * Implement the game with the Playername scene
+     * Implement the game with the PlayerName scene
      * then the Game scene
      *
      * @see #createGame()
@@ -200,8 +199,8 @@ public class ChessApp extends Application {
 
         Button enterButton = new Button("Enter");
         enterButton.setOnAction(e -> { //When click the button, check if the textfield is not empty
-            playerName = nameTextField.getCharacters().toString();
-            if ((!playerName.equals(""))) {
+             player.setName(nameTextField.getCharacters().toString());
+            if ((!player.getName().equals(""))) {
                 window.setScene(gameScene);
             } else {
                 wrongInputLabel.setVisible(true);
@@ -282,11 +281,11 @@ public class ChessApp extends Application {
     }
 
     /**
-     * This function is responsible about what happens when reaches the goal state
+     * This procedure is responsible for what happens when reaches the goal state
      */
     private void Goal() {
-        score = (int) ((numOfMoves / Float.valueOf(timer.getText())) * 100);
-        Label winner = new Label("You made it " + playerName + ", and your score is: " + score);
+        player.setScore((int) ((numOfMoves / Float.valueOf(timer.getText())) * 100));
+        Label winner = new Label("You made it " + player.getName() + ", and your score is: " + player.getScore());
         winner.setBackground(Background.EMPTY);
         HBox winnerBox = new HBox();
         winnerBox.getChildren().add(winner);
