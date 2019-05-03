@@ -38,13 +38,11 @@ public class Database {
                 } catch (JdbcSQLSyntaxErrorException e) {
                     conn = DriverManager.getConnection("jdbc:h2:./players");
                     //STEP 3: Execute a query
-                    System.out.println("Creating table in given database...");
                     stmt = conn.createStatement();
                     sql = "CREATE TABLE PLAYERS " +
                             "(playerName varchar(100), " +
                             " playerScore int )";
                     stmt.executeUpdate(sql);
-                    System.out.println("Created table in given database...");
                     conn.commit();
                 }
             }
@@ -87,8 +85,5 @@ public class Database {
                 se.printStackTrace();
             } // end finally try
         } // end try
-
     }
-
-
 }
