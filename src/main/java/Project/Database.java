@@ -1,6 +1,7 @@
 package Project;
 
 import javafx.collections.FXCollections;
+import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 
 import java.sql.*;
 import java.util.List;
@@ -13,25 +14,44 @@ public class Database {
         return data;
     }
 
-
     public void addToDatabase(Player player) {
         Connection conn = null;
         Statement stmt = null;
+        String sql;
         try {
             // STEP 1: Register JDBC driver
             Class.forName("org.h2.Driver");
 
             //STEP 2: Open a connection
-            conn = DriverManager.getConnection("jdbc:h2:file:./database/players", "", "");
+            conn = DriverManager.getConnection("jdbc:h2:./players");
 
             // STEP 3: INSERT DATA
-            stmt = conn.createStatement();
-            String sql = String.format("INSERT INTO PLAYERS (playerName, playerScore)  VALUES ( '%s', %2d)",
-                    player.getName(), player.getScore());
-            stmt.executeUpdate(sql);
+            while (true) {
+                try {
+                    stmt = conn.createStatement();
+                    sql = String.format("INSERT INTO PLAYERS (playerName, playerScore)  VALUES ( '%s', %2d)",
+                            player.getName(), player.getScore());
+                    stmt.executeUpdate(sql);
+
+                    conn.commit();
+                    break;
+                } catch (JdbcSQLSyntaxErrorException e) {
+                    conn = DriverManager.getConnection("jdbc:h2:./players");
+                    //STEP 3: Execute a query
+                    System.out.println("Creating table in given database...");
+                    stmt = conn.createStatement();
+                    sql = "CREATE TABLE PLAYERS " +
+                            "(playerName varchar(100), " +
+                            " playerScore int )";
+                    stmt.executeUpdate(sql);
+                    System.out.println("Created table in given database...");
+                    conn.commit();
+                }
+            }
 
             // STEP 4: GET DATA
             sql = "select * from (select  * from PLAYERS order by playerScore desc) where rownum <= 10 ";
+
             stmt.executeQuery(sql);
             ResultSet rs = stmt.executeQuery(sql);
 
