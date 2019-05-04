@@ -1,3 +1,0 @@
-2019-05-03 01:37:31 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT  * FROM PLAYERS ORDER BY PLAYERSCORE DESC WHERE[*] ROWNUM <= 10 "; SQL statement:
-select  * from PLAYERS order by playerScore desc where rownum <= 10 [42000-199]
