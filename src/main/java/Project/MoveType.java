@@ -1,8 +1,15 @@
 package Project;
 
 /**
- * Store the types of movements
+ * The types of movement.
  */
 public enum MoveType {
-    NONE, MOVE
+    /**
+     * Do not move.
+     */
+    NONE,
+    /**
+     * Do move.
+     */
+    MOVE
 }

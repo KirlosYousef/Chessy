@@ -6,14 +6,27 @@ import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 import java.sql.*;
 import java.util.List;
 
+/**
+ * The database class to save the player names and scores.
+ */
 public class Database {
-
+    /**
+     * Declares a list of Players.
+     * @see Player
+     */
     private List<Player> data;
 
+    /**
+     * @return players data.
+     * @see #data
+     */
     public List<Player> getData() {
         return data;
     }
 
+    /**
+     * @param player add the player name and score to the database.
+     */
     public void addToDatabase(Player player) {
         Connection conn = null;
         Statement stmt = null;

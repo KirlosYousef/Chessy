@@ -1,8 +1,19 @@
 package Project;
 
 /**
- * Store the types of pieces
+ * Store the types of pieces.
  */
 public enum PieceType {
-    KING, BISHOP, ROOK
+    /**
+     * King chess piece.
+     */
+    KING,
+    /**
+     * Bishop chess piece.
+     */
+    BISHOP,
+    /**
+     * Rook chess piece.
+     */
+    ROOK
 }

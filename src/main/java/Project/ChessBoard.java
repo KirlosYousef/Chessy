@@ -1,52 +1,81 @@
 package Project;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static javafx.scene.paint.Color.WHITE;
 
+/**
+ * To control everything within the board.
+ */
 public class ChessBoard extends Pane {
     //set the tile_size, width and the height of the tile
+    /**
+     * Declares the tile size.
+     */
     public static final int TILE_SIZE = 100;
+    /**
+     * Declares the tile width.
+     */
     public static final int WIDTH = 3;
+    /**
+     * Declares the tile height.
+     */
     public static final int HEIGHT = 2;
+    /**
+     * Declares the playing time.
+     */
     private Label timer = new Label("0");
-    private Tile[][] board = new Tile[WIDTH][HEIGHT];  //make a tile array which represents the board cells
+    /**
+     * Make a tile array which represents the board cells.
+     * @see Tile
+     */
+    private Tile[][] board = new Tile[WIDTH][HEIGHT];
+    /**
+     * Declares a player of type Player.
+     * @see Player
+     */
     private Player player = new Player();
+    /**
+     * Declares a window of type Stage.
+     * @see Stage
+     */
     private Stage window = new Stage();
-    //new groups to collect tiles and pieces
-    private Group tileGroup = new Group();
-    private Group pieceGroup = new Group();
+    /**
+     * Declares the number of movements player has made.
+     */
     private int numOfMoves;
-    private Database database = new Database();
 
 
+    /**
+     * @return the window
+     * @see #window
+     */
     public Stage getWindow() {
         return window;
     }
 
     /**
-     * Creates a pane with size the fits the number of tiles * it's size
-     * adding the tileGroups and pieceGroup into it
+     * Creates a pane with size the fits the number of tiles * it's size.
+     * adding the tileGroups and pieceGroup into it.
      *
-     * @return the pane with all content
+     * @return the pane with all content.
      */
     private Parent createGame() {
+        //Groups to collect tiles and pieces.
+        Group tileGroup = new Group();
+        Group pieceGroup = new Group();
+
         Pane root = new Pane();
         long startTime = System.currentTimeMillis();
         Label timerLabel = new Label("Time: ");
@@ -102,13 +131,13 @@ public class ChessBoard extends Pane {
     }
 
     /**
-     * A method which is responsible about the possibility of movement
+     * A method which is responsible about the possibility of movement.
      *
-     * @param piece is the piece to move
-     * @param newX  the x coordinate of the new cell
-     * @param newY  the y coordinate of the new cell
-     * @return a score to make the move according to it
-     * @see #makePiece(PieceType, int, int)
+     * @param piece is the piece to move.
+     * @param newX  the x coordinate of the new cell.
+     * @param newY  the y coordinate of the new cell.
+     * @return a score to make the move according to it.
+     * @see #makePiece(PieceType, int, int).
      */
     private MoveResult tryMove(Piece piece, int newX, int newY) {
         //get the old x and y coordinates
@@ -159,22 +188,22 @@ public class ChessBoard extends Pane {
     }
 
     /**
-     * to change the pixels position to coordinates
+     * to change the pixels position to coordinates.
      *
-     * @param pixel the pixel position of the piece
-     * @return cell coordinate
+     * @param pixel the pixel position of the piece.
+     * @return cell coordinate.
      */
     private int toBoard(double pixel) {
         return (int) (pixel + TILE_SIZE / 2) / TILE_SIZE;
     }
 
     /**
-     * Make a new piece on the cell with the x and y coordinates
+     * Make a new piece on the cell with the x and y coordinates.
      *
-     * @param type the type of the piece to make
-     * @param x    the x coordinate of the the cell to take
-     * @param y    the y coordinate of the the cell to take
-     * @return a piece which has a type and coordinates
+     * @param type the type of the piece to make.
+     * @param x    the x coordinate of the the cell to take.
+     * @param y    the y coordinate of the the cell to take.
+     * @return a piece which has a type and coordinates.
      */
     private Piece makePiece(PieceType type, int x, int y) {
 
@@ -221,7 +250,7 @@ public class ChessBoard extends Pane {
     }
 
     /**
-     * @return if the current state is a goal or not
+     * @return if the current state is a goal or not.
      */
     private Boolean isGoal() {
         if (!board[2][0].hasPiece()) {
@@ -233,9 +262,11 @@ public class ChessBoard extends Pane {
     }
 
     /**
-     * This procedure is responsible for what happens when reaches the goal state
+     * This procedure is responsible for what happens when reaches the goal state.
      */
     private void Goal() {
+        Database database = new Database();
+
         player.setScore((int) ((numOfMoves / Float.valueOf(timer.getText())) * 100));
         database.addToDatabase(player);
 
@@ -272,7 +303,7 @@ public class ChessBoard extends Pane {
 
 
     /**
-     * @return the first scene of the player name
+     * @return the first scene of the player name.
      */
     public Scene playerScene() {
 

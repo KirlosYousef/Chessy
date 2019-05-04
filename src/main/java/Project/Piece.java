@@ -7,45 +7,56 @@ import javafx.scene.layout.StackPane;
 import static Project.ChessBoard.TILE_SIZE;
 
 /**
- *Contains the image and the information about the piece
+ * Contains the image and the information about the piece.
+ * @see Piece
  */
 public class Piece extends StackPane {
 
+    /**
+     * Declares a the type of piece.
+     * @see PieceType
+     */
     private PieceType type;
-
+    /**
+     * Declares where the mouse pressed.
+     */
     private double mouseX, mouseY;
+    /**
+     * Declares The position of the piece before the movement.
+     */
     private double oldX, oldY;
 
 
 
     /**
-     * @return the type of the piece
+     * @return the type of the piece.
      */
     public PieceType getType() {
         return type;
     }
 
     /**
-     * @return the pixel of x of the piece
+     * @return the pixel of x of the piece.
      */
     public double getOldX() {
         return oldX;
     }
 
     /**
-     * @return the pixel of y of the piece
+     * @return the pixel of y of the piece.
      */
     public double getOldY() {
         return oldY;
     }
 
     /**
-     * @param type the type of piece
-     * @param x the x coordinate
-     * @param y the y coordinate
+     * @param type the type of piece.
+     * @param x the x coordinate.
+     * @param y the y coordinate.
      */
     public Piece(PieceType type, int x, int y) {
         this.type = type;
+
         ImageView imageView = new ImageView();
         Image image;
         move(x, y);
@@ -72,9 +83,9 @@ public class Piece extends StackPane {
     }
 
     /**
-     * Function to move the piece to the new coordinates * the size of the tile
-     * @param x new x coordinate
-     * @param y new y coordinate
+     * Function to move the piece to the new coordinates * the size of the tile.
+     * @param x new x coordinate.
+     * @param y new y coordinate.
      */
     public void move(int x, int y) {
         oldX = x * TILE_SIZE;
@@ -83,7 +94,7 @@ public class Piece extends StackPane {
     }
 
     /**
-     * To get back the piece to the old cell (Not to move)
+     * To get back the piece to the old cell (Not to move).
      */
     public void abortMove(){
         relocate(oldX, oldY);
