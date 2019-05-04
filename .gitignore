@@ -80,8 +80,8 @@ fabric.properties
 # modules.xml
 # .idea/misc.xml
 # *.ipr
-.mv.db
-.trace.db
+players.mv.db
+players.trace.db
 
 # Sonarlint plugin
 .idea/sonarlint
