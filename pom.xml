@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>ChessApp</name>
+    <description>A 3 * 2 Chess Board with a start and goal statuses.</description>
     <developers>
         <developer>
             <name>KirlosYousef</name>
@@ -16,6 +17,10 @@
             <id>QLBVZH</id>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/KirlosYousef/ChessBoard</connection>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
