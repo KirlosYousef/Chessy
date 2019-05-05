@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -14,6 +14,7 @@ public class ChessApp extends Application {
      * Declaring a chessboard of type ChessBoard.
      * @see ChessBoard
      */
+
     private ChessBoard chessBoard = new ChessBoard();
 
     /**

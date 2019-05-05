@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 /**
  * The result of the movement.

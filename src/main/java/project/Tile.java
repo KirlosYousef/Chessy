@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

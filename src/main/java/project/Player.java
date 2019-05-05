@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 /**
  * For the player data.

@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Insets;
@@ -12,13 +12,27 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static javafx.scene.paint.Color.WHITE;
+
 
 /**
  * To control everything within the board.
  */
 public class ChessBoard extends Pane {
+    /**
+     * Declares a logger for ChessBoard class.
+     */
+    private static Logger logger = LoggerFactory.getLogger(ChessBoard.class);
+
+    /**
+     * The location of the configuration file.
+     */
+//    private static final String configLocation = org.apache.logging.log4j.core.LoggerContext.getContext().getConfiguration().getConfigurationSource().getLocation();
+
+
     //set the tile_size, width and the height of the tile
     /**
      * Declares the tile size.
@@ -127,6 +141,7 @@ public class ChessBoard extends Pane {
                 }
             }
         }
+        logger.info("Game created!");
         return root;
     }
 
@@ -210,13 +225,13 @@ public class ChessBoard extends Pane {
         Piece piece = new Piece(type, x, y);
 
         piece.setOnMouseReleased(e -> {             //when releasing the mouse
-
             // check if the mouse released out side the chessBoard then abort the movement
             boolean inSize = toBoard(piece.getLayoutX()) <= 2 && toBoard(piece.getLayoutX()) >= 0
                     && toBoard(piece.getLayoutY()) <= 1 && toBoard(piece.getLayoutY()) >= 0;
 
             if (!inSize) {
                 piece.abortMove();
+                logger.warn("Tried to drop the " + piece.getType() + " away!");
             } else {
                 int newX = toBoard(piece.getLayoutX());
                 int newY = toBoard(piece.getLayoutY());
@@ -236,9 +251,11 @@ public class ChessBoard extends Pane {
                         board[x0][y0].setPiece(null);            //make the old cell empty
                         board[newX][newY].setPiece(piece);       //take the new cell
                         numOfMoves++;
-
-                        if (isGoal())
+                        logger.info("Piece " + piece.getType() + " Moved");
+                        if (isGoal()) {
+                            logger.info("Reached goal state!");
                             Goal();
+                        }
                         break;
                     }
                 }

@@ -1,4 +1,4 @@
-package Project;
+package project;
 
 /**
  * This is for the Shell plugin to lunch the game.

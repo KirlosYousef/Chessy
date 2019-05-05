@@ -1,7 +1,9 @@
-package Project;
+package project;
 
 import javafx.collections.FXCollections;
 import org.h2.jdbc.JdbcSQLSyntaxErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
@@ -10,6 +12,11 @@ import java.util.List;
  * The database class to save the player names and scores.
  */
 public class Database {
+    /**
+     * Declares a logger for Database class.
+     */
+    private static Logger logger = LoggerFactory.getLogger(Database.class);
+
     /**
      * Declares a list of Players.
      * @see Player
@@ -32,13 +39,15 @@ public class Database {
         Statement stmt = null;
         String sql;
         try {
-            // STEP 1: Register JDBC driver
+            logger.info("STEP 1: Registering JDBC driver...");
             Class.forName("org.h2.Driver");
 
-            //STEP 2: Open a connection
+
+            logger.info("STEP 2: Opening a connection...");
             conn = DriverManager.getConnection("jdbc:h2:./players");
 
-            // STEP 3: INSERT DATA
+
+            logger.info("STEP 3: Inserting data...");
             while (true) {
                 try {
                     stmt = conn.createStatement();
@@ -49,8 +58,10 @@ public class Database {
                     conn.commit();
                     break;
                 } catch (JdbcSQLSyntaxErrorException e) {
+                    logger.info("No table founded!");
                     conn = DriverManager.getConnection("jdbc:h2:./players");
                     //STEP 3: Execute a query
+                    logger.info("Creating table...");
                     stmt = conn.createStatement();
                     sql = "CREATE TABLE PLAYERS " +
                             "(playerName varchar(100), " +
@@ -59,14 +70,14 @@ public class Database {
                     conn.commit();
                 }
             }
-
-            // STEP 4: GET DATA
+            logger.info("Data inserted");
+            logger.info("STEP 4: Getting the data...");
             sql = "select * from (select  * from PLAYERS order by playerScore desc) where rownum <= 10 ";
 
             stmt.executeQuery(sql);
             ResultSet rs = stmt.executeQuery(sql);
 
-            // STEP 5: STORE DATA
+            logger.info("STEP 5: Storing the data...");
             data = FXCollections.observableArrayList();
             while (rs.next()) {
                 Player playerData = new Player();
@@ -75,27 +86,31 @@ public class Database {
                 data.add(playerData);
             }
 
-            // STEP 6: Clean-up environment
+            logger.info("STEP 6: Cleaning-up environment...");
             conn.commit();
             stmt.close();
             conn.close();
 
         } catch (SQLException se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+            logger.error("Error with JDBC ", se);
+//            se.printStackTrace();
         } catch (Exception e) {
-            // Handle errors for Class.forName
-            e.printStackTrace();
+            // Handle errors for class
+            logger.error("Error for class", e);
+//            e.printStackTrace();
         } finally {
             // finally block used to close resources
             try {
                 if (stmt != null) stmt.close();
             } catch (SQLException se2) {
+                logger.error("Error ", se2);
             } // nothing we can do
             try {
                 if (conn != null) conn.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                logger.error("SQLException", se);
+//                se.printStackTrace();
             } // end finally try
         } // end try
     }
