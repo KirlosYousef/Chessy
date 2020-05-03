@@ -1,4 +1,6 @@
-package project;
+package View;
+
+import Model.Types.MoveType;
 
 /**
  * The result of the movement.

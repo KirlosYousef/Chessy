@@ -1,7 +1,7 @@
 /**
  * Provides the classes necessary to create.
  * a 3*2 chess game
- * @see project.ChessApp
+ * @see Main.ChessApp
  * @see project.ChessBoard
  *
  * @author Kirlos Yousef

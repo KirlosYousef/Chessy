@@ -1,4 +1,4 @@
-package project;
+package Model;
 
 /**
  * For the player data.
@@ -43,4 +43,7 @@ public class Player {
         this.score = score;
     }
 
+    public Player(String name) {
+        this.name = name;
+    }
 }

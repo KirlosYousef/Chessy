@@ -1,4 +1,4 @@
-package project;
+package View;
 
 /**
  * The types of movement.

@@ -1,4 +1,4 @@
-package project;
+package View;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -6,7 +6,7 @@ import javafx.scene.layout.StackPane;
 
 
 
-import static project.ChessBoard.TILE_SIZE;
+import static View.ChessBoardView.TILE_SIZE;
 
 /**
  * Contains the image and the information about the piece.

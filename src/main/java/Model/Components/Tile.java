@@ -1,4 +1,4 @@
-package project;
+package View;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -45,10 +45,10 @@ public class Tile extends Rectangle {
      * @param y the y coordinate.
      */
     public Tile(boolean light, int x, int y){
-        setWidth(ChessBoard.TILE_SIZE);
-        setHeight(ChessBoard.TILE_SIZE);
+        setWidth(ChessBoardView.TILE_SIZE);
+        setHeight(ChessBoardView.TILE_SIZE);
 
-        relocate(x * ChessBoard.TILE_SIZE, y * ChessBoard.TILE_SIZE);
+        relocate(x * ChessBoardView.TILE_SIZE, y * ChessBoardView.TILE_SIZE);
 
         setFill(light ? Color.WHITE : Color.GRAY);
     }

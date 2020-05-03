@@ -1,5 +1,6 @@
-package project;
+package View;
 
+import Model.Player;
 import javafx.collections.FXCollections;
 import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 import org.slf4j.Logger;
@@ -7,6 +8,8 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
+
+import static Controller.PlayerController.getPlayer;
 
 /**
  * The database class to save the player names and scores.
@@ -80,7 +83,7 @@ public class Database {
             logger.info("STEP 5: Storing the data...");
             data = FXCollections.observableArrayList();
             while (rs.next()) {
-                Player playerData = new Player();
+                Player playerData = getPlayer();
                 playerData.setName(rs.getString("playerName"));
                 playerData.setScore(rs.getInt("playerScore"));
                 data.add(playerData);
@@ -94,11 +97,9 @@ public class Database {
         } catch (SQLException se) {
             // Handle errors for JDBC
             logger.error("Error with JDBC ", se);
-//            se.printStackTrace();
         } catch (Exception e) {
             // Handle errors for class
             logger.error("Error for class", e);
-//            e.printStackTrace();
         } finally {
             // finally block used to close resources
             try {
@@ -110,7 +111,6 @@ public class Database {
                 if (conn != null) conn.close();
             } catch (SQLException se) {
                 logger.error("SQLException", se);
-//                se.printStackTrace();
             } // end finally try
         } // end try
     }

@@ -1,4 +1,4 @@
-package project;
+package View;
 
 /**
  * Store the types of pieces.
