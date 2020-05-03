@@ -1,7 +1,10 @@
-package project;
+package Main;
 
+import Models.Data.GameData;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import static Views.LaunchView.playerView;
 
 /**
  * 3*2 ChessApp.
@@ -9,13 +12,6 @@ import javafx.stage.Stage;
  * @author Kirlos Yousef.
  */
 public class ChessApp extends Application {
-
-    /**
-     * Declaring a chessboard of type ChessBoard.
-     * @see ChessBoard
-     */
-
-    private ChessBoard chessBoard = new ChessBoard();
 
     /**
      * @param args required main method.
@@ -26,14 +22,12 @@ public class ChessApp extends Application {
 
     /**
      * Implement the game with the PlayerName scene.
-     *
-     * @see ChessBoard#playerScene().
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage = chessBoard.getWindow();
+        primaryStage = GameData.getWindow();
         primaryStage.setTitle("ChessApp");
-        primaryStage.setScene(chessBoard.playerScene());
+        primaryStage.setScene(playerView());
         primaryStage.setResizable(false);
         primaryStage.show();
     }
