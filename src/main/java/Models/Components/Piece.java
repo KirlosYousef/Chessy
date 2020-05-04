@@ -20,10 +20,12 @@ public class Piece extends StackPane {
      * @see PieceType
      */
     private PieceType type;
+
     /**
      * Declares where the mouse pressed.
      */
     private double mouseX, mouseY;
+
     /**
      * Declares The position of the piece before the movement.
      */
@@ -62,9 +64,9 @@ public class Piece extends StackPane {
         Image image;
         move(x, y);
 
-        String kingImg = "/White_King.png";
-        String bishopImg = "/White_Bishop.png";
-        String rookImg = "/White_Rook.png";
+        String kingImg = "/pictures/White_King.png";
+        String bishopImg = "/pictures/White_Bishop.png";
+        String rookImg = "/pictures/White_Rook.png";
 
         image = new Image(type == PieceType.KING ? kingImg : (type == PieceType.BISHOP ? bishopImg : rookImg));
 

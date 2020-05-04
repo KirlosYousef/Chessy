@@ -8,6 +8,7 @@ public class Player {
      * Declares the player's name.
      */
     private String name;
+
     /**
      * Declares the player's score.
      */
@@ -43,9 +44,17 @@ public class Player {
         this.score = score;
     }
 
+    /**
+     * Player constructor with name parameter.
+     *
+     * @param name Player's name.
+     */
     public Player(String name) {
         this.name = name;
     }
 
+    /**
+     * Player constructor.
+     */
     public Player() {}
 }

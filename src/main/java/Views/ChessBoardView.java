@@ -19,8 +19,20 @@ import static javafx.scene.paint.Color.WHITE;
 
 /**
  * To control everything within the board.
+ *
+ * @see GameController
  */
 public class ChessBoardView extends Pane {
+
+    /**
+     * Logger for Database class.
+     */
+    private static Logger logger = LoggerFactory.getLogger(ChessBoardView.class);
+
+    /**
+     * A game controller.
+     */
+    private static GameController gameController = new GameController();
 
     /**
      * Declares the tile size.
@@ -42,10 +54,6 @@ public class ChessBoardView extends Pane {
      * @see Tile
      */
     public static Tile[][] board = new Tile[WIDTH][HEIGHT];
-
-    private static Logger logger = LoggerFactory.getLogger(ChessBoardView.class);
-
-    private static GameController gameController = new GameController();
 
 
     /**

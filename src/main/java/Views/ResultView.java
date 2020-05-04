@@ -14,6 +14,11 @@ import java.util.Map;
 import static Controllers.ResultController.*;
 import static Models.Data.GameData.*;
 
+/**
+ * The last view to appear when the player reaches the Goal state.
+ *
+ * @see Controllers.ResultController
+ */
 public class ResultView {
 
     /**

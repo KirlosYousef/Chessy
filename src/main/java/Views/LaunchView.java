@@ -13,6 +13,11 @@ import javafx.scene.layout.VBox;
 import static Controllers.LaunchController.getPlayer;
 import static Views.ChessBoardView.createGame;
 
+/**
+ * The first view to appear when the game starts.
+ *
+ * @see LaunchController
+ */
 public class LaunchView {
 
     /**

@@ -2,6 +2,9 @@ package Models.Data;
 
 import static Views.ChessBoardView.board;
 
+/**
+ * Responsible for the current game state.
+ */
 public class GameState {
 
     /**

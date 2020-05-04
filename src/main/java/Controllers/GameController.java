@@ -12,8 +12,16 @@ import static Models.Data.GameState.isGoal;
 import static Views.ChessBoardView.*;
 import static Views.ResultView.Goal;
 
+/**
+ * Controls the game logic.
+ *
+ * @see Views.ChessBoardView
+ */
 public class GameController {
 
+    /**
+     * Logger for GameController class.
+     */
     private static Logger logger = LoggerFactory.getLogger(GameController.class);
 
     /**
@@ -137,7 +145,5 @@ public class GameController {
         }
         return new MoveResult(MoveType.NONE);
     }
-
-
 }
 

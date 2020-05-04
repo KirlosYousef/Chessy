@@ -1,7 +1,6 @@
 package Models.Data;
 
 import javafx.collections.FXCollections;
-import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +13,20 @@ import java.util.List;
 public class Database {
 
     /**
+     * Logger for Database class.
+     */
+    private static Logger logger = LoggerFactory.getLogger(Database.class);
+
+    /**
      * Declares a list of Players.
+     *
      * @see Player
      */
     private List<Player> data;
 
-    private static Logger logger = LoggerFactory.getLogger(Database.class);
-
     /**
      * @return players data.
+     *
      * @see #data
      */
     public List<Player> getData() {
@@ -30,22 +34,24 @@ public class Database {
     }
 
     /**
-     * @param player add the player name and score to the database.
+     * Add the {@code player} name and score to the database.
+     *
+     * @param player of type {@link Player} to be added in the database.
      */
     public void addToDatabase(Player player) {
         Connection conn = null;
         Statement stmt = null;
         String sql;
         try {
-            logger.info("STEP 1: Registering JDBC driver...");
+            logger.debug("STEP 1: Registering JDBC driver...");
             Class.forName("org.h2.Driver");
 
 
-            logger.info("STEP 2: Opening a connection...");
+            logger.debug("STEP 2: Opening a connection...");
             conn = DriverManager.getConnection("jdbc:h2:./players");
 
 
-            logger.info("STEP 3: Inserting data...");
+            logger.debug("STEP 3: Inserting data...");
             while (true) {
                 try {
                     stmt = conn.createStatement();
@@ -55,11 +61,11 @@ public class Database {
 
                     conn.commit();
                     break;
-                } catch (JdbcSQLSyntaxErrorException e) {
+                } catch (SQLSyntaxErrorException e) {
                     logger.info("No table founded!");
                     conn = DriverManager.getConnection("jdbc:h2:./players");
                     //STEP 3: Execute a query
-                    logger.info("Creating table...");
+                    logger.debug("Creating table...");
                     stmt = conn.createStatement();
                     sql = "CREATE TABLE PLAYERS " +
                             "(playerName varchar(100), " +
@@ -69,13 +75,13 @@ public class Database {
                 }
             }
             logger.info("Data inserted");
-            logger.info("STEP 4: Getting the data...");
+            logger.debug("STEP 4: Getting the data...");
             sql = "select * from (select  * from PLAYERS order by playerScore desc) where rownum <= 10";
 
             stmt.executeQuery(sql);
             ResultSet rs = stmt.executeQuery(sql);
 
-            logger.info("STEP 5: Storing the data...");
+            logger.debug("STEP 5: Storing the data...");
             data = FXCollections.observableArrayList();
             while (rs.next()) {
                 Player playerData = new Player();
@@ -84,7 +90,7 @@ public class Database {
                 data.add(playerData);
             }
 
-            logger.info("STEP 6: Cleaning-up environment...");
+            logger.debug("STEP 6: Cleaning-up environment...");
             conn.commit();
             stmt.close();
             conn.close();
