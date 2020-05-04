@@ -118,7 +118,7 @@ public class ChessBoardView extends Pane {
                 }
             }
         }
-        logger.info("Game created!");
+        logger.info("Game Created!");
         return root;
     }
 }

@@ -94,6 +94,7 @@ public class Database {
             conn.commit();
             stmt.close();
             conn.close();
+            logger.info("Game Finished!");
 
         } catch (SQLException se) {
             logger.error("Error with JDBC ", se); // Handle errors for JDBC
