@@ -7,7 +7,7 @@
     <groupId>hu.unideb.inf</groupId>
     <artifactId>ChessBoard</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <name>ChessApp</name>
     <description>A 3 * 2 Chess Board with a start and goal statuses.</description>
