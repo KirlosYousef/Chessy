@@ -98,6 +98,7 @@ public class ChessBoardView extends Pane {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
                 Tile tile = new Tile((x + y) % 2 != 0, x, y);
+                tile.setId("tile" + x + y);
                 board[x][y] = tile;
 
                 tileGroup.getChildren().add(tile);
@@ -111,6 +112,7 @@ public class ChessBoardView extends Pane {
                 } else if ((x == 0 || x == 1)) {
                     piece = gameController.makePiece(PieceType.ROOK, x, y);
                 }
+
 
                 if (piece != null) {
                     tile.setPiece(piece);

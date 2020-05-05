@@ -33,7 +33,7 @@ public class GameData {
     }
 
     /**
-     * @return the current window.
+     * @return the game window.
      */
     public static Stage getWindow() {
         return window;

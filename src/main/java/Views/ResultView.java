@@ -32,6 +32,7 @@ public class ResultView {
 
         Label winner = new Label("You made it " + LaunchController.getPlayer().getName() + ", and your score is: "
                 + LaunchController.getPlayer().getScore());
+        winner.setId("winnerLabel");
         Label top10 = new Label("Top 10 players:");
         winner.setBackground(Background.EMPTY);
         VBox winnerBox = new VBox();

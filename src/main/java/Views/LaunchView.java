@@ -23,15 +23,19 @@ public class LaunchView {
     /**
      * @return the first scene of the player name.
      */
-    public static Scene playerView() {
+    public static Scene launchView() {
         Label entNameLabel = new Label("Please enter your playerName: ");
         Label wrongInputLabel = new Label("Wrong input!");
+        wrongInputLabel.setId("wrongInputLabel");
         wrongInputLabel.setVisible(false);
 
         TextField nameTextField = new TextField();
+        nameTextField.setId("nameTextField");
         nameTextField.setMaxWidth(250);
 
         Button enterButton = new Button("Enter");
+        enterButton.setId("enterButton");
+
         enterButton.setOnAction(e -> { //When click the button, check if the textfield is not empty
             String playerName = nameTextField.getCharacters().toString();
             LaunchController.setPlayer(new Player(playerName));

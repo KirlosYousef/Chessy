@@ -35,6 +35,7 @@ public class GameController {
     public Piece makePiece(PieceType type, int x, int y) {
 
         Piece piece = new Piece(type, x, y);
+        piece.setId(type.name() + x + y);
 
         piece.setOnMouseReleased(e -> {             //when releasing the mouse
             // check if the mouse released out side the chessBoard then abort the movement
@@ -63,6 +64,7 @@ public class GameController {
                         board[x0][y0].setPiece(null);            //make the old cell empty
                         board[newX][newY].setPiece(piece);       //take the new cell
                         addMove();                               //Adds a move to the model data
+                        piece.setId(type.name() + newX + newY);  //Set the new piece ID
                         logger.info("Piece " + piece.getType() + " Moved");
                         if (isGoal()) {
                             logger.info("Reached goal state!");
@@ -105,7 +107,7 @@ public class GameController {
 
         if (board[newX][newY].hasPiece()) { // if the the new cell is not empty, do not move
             return new MoveResult(MoveType.NONE);
-        } else  //Check if the new cell is empty
+        } else  // if the new cell is empty
         {
             switch (piece.getType().name()) {
                 case "KING":  //if the piece to move is a king
