@@ -50,15 +50,13 @@ public class Database {
             logger.debug("STEP 2: Opening a connection...");
             conn = DriverManager.getConnection("jdbc:h2:./players");
 
-
             logger.debug("STEP 3: Inserting data...");
             while (true) {
                 try {
                     stmt = conn.createStatement();
-                    sql = String.format("INSERT INTO PLAYERS (playerName, playerScore)  VALUES ( '%s', %2d)",
+                    sql = String.format("INSERT INTO PLAYERS (playerName, playerScore)  VALUES ('%s', %2d)",
                             player.getName(), player.getScore());
                     stmt.executeUpdate(sql);
-
                     conn.commit();
                     break;
                 } catch (SQLSyntaxErrorException e) {
@@ -69,7 +67,7 @@ public class Database {
                     stmt = conn.createStatement();
                     sql = "CREATE TABLE PLAYERS " +
                             "(playerName varchar(100), " +
-                            " playerScore int )";
+                            " playerScore int)";
                     stmt.executeUpdate(sql);
                     conn.commit();
                 }
