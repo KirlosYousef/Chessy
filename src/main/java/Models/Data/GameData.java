@@ -21,6 +21,7 @@ public class GameData {
 
     /**
      * Declares a window of type Stage.
+     *
      * @see Stage
      */
     private static Stage window = new Stage();
@@ -28,35 +29,35 @@ public class GameData {
     /**
      * @return number of movements player has made so far.
      */
-    public static int getNumOfMoves() {
+    public int getNumOfMoves() {
         return numOfMoves;
     }
 
     /**
      * @return the game window.
      */
-    public static Stage getWindow() {
+    public Stage getWindow() {
         return window;
     }
 
     /**
      * @param scene sets the current scene to the window.
      */
-    public static void setWindowScene(Scene scene) {
+    public void setWindowScene(Scene scene) {
         window.setScene(scene);
     }
 
     /**
      * @return the game timer.
      */
-    public static Label getTimer() {
+    public Label getTimer() {
         return timer;
     }
 
     /**
      * Increases the number of movements every time the player preforms a new move.
      */
-    public static void addMove() {
+    public void addMove() {
         numOfMoves++;
     }
 }

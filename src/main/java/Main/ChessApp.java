@@ -1,10 +1,10 @@
 package Main;
 
 import Models.Data.GameData;
+import Views.LaunchView;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import static Views.LaunchView.launchView;
 
 /**
  * 3*2 ChessApp.
@@ -25,9 +25,12 @@ public class ChessApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        primaryStage = GameData.getWindow();
+        GameData gameData = new GameData();
+        Scene launchScene = new LaunchView().LaunchScene();
+
+        primaryStage = gameData.getWindow();
         primaryStage.setTitle("ChessApp");
-        primaryStage.setScene(launchView());
+        primaryStage.setScene(launchScene);
         primaryStage.setResizable(false);
         primaryStage.show();
     }

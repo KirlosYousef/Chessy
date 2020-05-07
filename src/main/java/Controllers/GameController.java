@@ -1,16 +1,17 @@
 package Controllers;
 
 import Models.Components.Piece;
+import Models.Data.GameData;
+import Models.Data.GameState;
 import Models.Data.MoveResult;
 import Models.Types.MoveType;
 import Models.Types.PieceType;
+import Views.ChessBoardView;
+import Views.ResultView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static Models.Data.GameData.*;
-import static Models.Data.GameState.isGoal;
-import static Views.ChessBoardView.*;
-import static Views.ResultView.Goal;
+import static Views.ChessBoardView.board;
 
 /**
  * Controls the game logic.
@@ -33,6 +34,10 @@ public class GameController {
      * @return a piece which has a type and coordinates.
      */
     public Piece makePiece(PieceType type, int x, int y) {
+
+        ResultView resultView = new ResultView();
+        GameState gameState = new GameState();
+        GameData gameData = new GameData();
 
         Piece piece = new Piece(type, x, y);
         piece.setId(type.name() + x + y);
@@ -63,12 +68,12 @@ public class GameController {
                         piece.move(newX, newY);                  //if it's move then move it to the new coordinates
                         board[x0][y0].setPiece(null);            //make the old cell empty
                         board[newX][newY].setPiece(piece);       //take the new cell
-                        addMove();                               //Adds a move to the model data
+                        gameData.addMove();                               //Adds a move to the model data
                         piece.setId(type.name() + newX + newY);  //Set the new piece ID
                         logger.info("Piece " + piece.getType() + " Moved");
-                        if (isGoal()) {
+                        if (gameState.isGoal()) {
                             logger.info("Reached goal state!");
-                            Goal();
+                            resultView.Goal();
                         }
                         break;
                     }
@@ -87,6 +92,7 @@ public class GameController {
      * @return cell coordinate.
      */
     private int toBoard(double pixel) {
+        int TILE_SIZE = new ChessBoardView().TILE_SIZE;
         return (int) (pixel + TILE_SIZE / 2) / TILE_SIZE;
     }
 

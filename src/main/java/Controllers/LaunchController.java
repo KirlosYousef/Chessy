@@ -15,7 +15,7 @@ public class LaunchController {
     /**
      * @return player's data.
      */
-    public static Player getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
@@ -24,9 +24,8 @@ public class LaunchController {
      *
      * @param player to be defined.
      */
-    public static void setPlayer(Player player) {
+    public void setPlayer(Player player) {
         LaunchController.player = player;
     }
-
 
 }

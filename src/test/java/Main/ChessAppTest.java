@@ -2,6 +2,8 @@ package Main;
 
 import Models.Data.GameData;
 import Models.Types.PieceType;
+import Views.LaunchView;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
@@ -13,37 +15,39 @@ import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 
 
-import static Views.LaunchView.launchView;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ChessAppTest extends ApplicationTest {
 
+    @BeforeAll
+    public static void turnOffSystemWarnings() {
+        System.err.close();
+        System.setErr(System.out);
+    }
+
     @Override
-    public void start (Stage primaryStage){
-        primaryStage = GameData.getWindow();
+    public void start(Stage primaryStage) {
+        GameData gameData = new GameData();
+        Scene launchScene = new LaunchView().LaunchScene();
+
+        primaryStage = gameData.getWindow();
         primaryStage.setTitle("ChessApp");
-        primaryStage.setScene(launchView());
+        primaryStage.setScene(launchScene);
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.toFront();
     }
 
-    @BeforeAll
-    public static void turnOffSystemWarnings(){
-        System.err.close();
-        System.setErr(System.out);
-    }
-
     @After
-    public void tearDown () throws Exception {
+    public void tearDown() throws Exception {
         FxToolkit.hideStage();
         release(new KeyCode[]{});
         release(new MouseButton[]{});
     }
 
     @Test
-    public void testWriteValidPlayerName() throws FxRobotException{
+    public void testWriteValidPlayerName() throws FxRobotException {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -54,7 +58,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testWriteUnValidPlayerName(){
+    public void testWriteUnValidPlayerName() {
         clickOn("#nameTextField").write("");
 
         clickOn("#enterButton");
@@ -63,7 +67,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testMovingPieceOutOfTheGameWindow(){
+    public void testMovingPieceOutOfTheGameWindow() {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -77,7 +81,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testMovingPieceToOccupiedTile(){
+    public void testMovingPieceToOccupiedTile() {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -91,7 +95,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testMovingKingToIllegalTile(){
+    public void testMovingKingToIllegalTile() {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -105,7 +109,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testMovingBishopToIllegalTile(){
+    public void testMovingBishopToIllegalTile() {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -119,7 +123,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testMovingRookToIllegalTile(){
+    public void testMovingRookToIllegalTile() {
 
         clickOn("#nameTextField").write("Tester");
 
@@ -145,7 +149,7 @@ public class ChessAppTest extends ApplicationTest {
     }
 
     @Test
-    public void testFullWinGame(){
+    public void testFullWinGame() {
 
         clickOn("#nameTextField").write("Tester");
 

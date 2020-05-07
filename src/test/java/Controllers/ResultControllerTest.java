@@ -1,53 +1,54 @@
 package Controllers;
 
 import Models.Data.Player;
+import Models.Data.Results.ChessAppGameResult;
+import Models.Data.Results.GameResultDao;
 import org.junit.jupiter.api.*;
 
-import java.sql.*;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ResultControllerTest {
 
+    private static GameResultDao gameResultDao = GameResultDao.getInstance();
+
+    private static ResultController resultController = new ResultController();
+
+    private static LaunchController launchController = new LaunchController();
+
+    @BeforeAll
+    static void deleteAllRowsOfTheTable() {
+        gameResultDao.deleteAll();
+    }
+
     @BeforeEach
     void setUp() {
         Player player = new Player();
         player.setName("Tester");
-        LaunchController.setPlayer(player);
-    }
-
-    @BeforeAll
-    static void dropTableIfExists() throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:./players");
-        try {
-            Statement stmt = conn.createStatement();
-            String sql = "DROP TABLE PLAYERS;";
-            stmt.executeUpdate(sql);
-            conn.commit();
-        } catch (SQLSyntaxErrorException e){
-            // There is already no tables.
-            assertEquals("Table \"PLAYERS\" not found; SQL statement:\n" +
-                    "DROP TABLE PLAYERS; [42102-200]", e.getMessage());
-        }
+        launchController.setPlayer(player);
     }
 
     @Test
-    void testGoalReached() {
-        ResultController.GoalReached(100);
+    void testDataAddedToTheTableWhenGoalReached() {
+        resultController.GoalReached(100);
+
+        assertTrue(gameResultDao.findAll().stream().map(ChessAppGameResult::getPlayer)
+                .anyMatch(name -> name.equals(launchController.getPlayer().getName())));
     }
 
     @Test
-    void testGetTop10(){
+    void testGetTop10() {
         int score = new Random().nextInt(10000);
 
-        ResultController.GoalReached(score);
+        resultController.GoalReached(score);
 
-        assertTrue(ResultController.getTop10().size() <= 10);
+        assertTrue(resultController.getTop10().size() <= 10);
 
-        assertTrue(ResultController.getTop10().containsKey("Tester"));
+        assertTrue(resultController.getTop10().stream().map(ChessAppGameResult::getPlayer)
+                .anyMatch(playerName -> playerName.equals(launchController.getPlayer().getName())));
 
-        assertTrue(ResultController.getTop10().containsValue(score));
+        assertTrue(resultController.getTop10().stream().map(ChessAppGameResult::getScore)
+                .anyMatch(playerScore -> playerScore == launchController.getPlayer().getScore()));
     }
 }

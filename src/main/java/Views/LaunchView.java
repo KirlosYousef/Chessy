@@ -10,8 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import static Controllers.LaunchController.getPlayer;
 import static Views.ChessBoardView.createGame;
+
 
 /**
  * The first view to appear when the game starts.
@@ -23,7 +23,11 @@ public class LaunchView {
     /**
      * @return the first scene of the player name.
      */
-    public static Scene launchView() {
+    public Scene LaunchScene() {
+        LaunchController launchController = new LaunchController();
+        ChessBoardView chessBoardView = new ChessBoardView();
+        GameData gameData = new GameData();
+
         Label entNameLabel = new Label("Please enter your playerName: ");
         Label wrongInputLabel = new Label("Wrong input!");
         wrongInputLabel.setId("wrongInputLabel");
@@ -38,11 +42,11 @@ public class LaunchView {
 
         enterButton.setOnAction(e -> { //When click the button, check if the textfield is not empty
             String playerName = nameTextField.getCharacters().toString();
-            LaunchController.setPlayer(new Player(playerName));
+            launchController.setPlayer(new Player(playerName));
 
-            if ((!getPlayer().getName().equals(""))) {
+            if ((!launchController.getPlayer().getName().equals(""))) {
                 Scene gameScene = new Scene(createGame());
-                GameData.setWindowScene(gameScene);
+                gameData.setWindowScene(gameScene);
             } else {
                 wrongInputLabel.setVisible(true);
             }

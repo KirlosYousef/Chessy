@@ -2,6 +2,7 @@ package Views;
 
 import Models.Components.Piece;
 import Models.Components.Tile;
+import Models.Data.GameData;
 import Models.Types.PieceType;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import Controllers.GameController;
 
-import static Models.Data.GameData.*;
 import static javafx.scene.paint.Color.WHITE;
 
 
@@ -25,36 +25,31 @@ import static javafx.scene.paint.Color.WHITE;
 public class ChessBoardView extends Pane {
 
     /**
+     * Declares the tile width.
+     */
+    private static final int WIDTH = 3;
+    /**
+     * Declares the tile height.
+     */
+    private static final int HEIGHT = 2;
+    /**
+     * Make a tile array which represents the board cells.
+     *
+     * @see Tile
+     */
+    public static Tile[][] board = new Tile[WIDTH][HEIGHT];
+    /**
      * Logger for Database class.
      */
     private static Logger logger = LoggerFactory.getLogger(ChessBoardView.class);
-
     /**
      * A game controller.
      */
     private static GameController gameController = new GameController();
-
     /**
      * Declares the tile size.
      */
-    public static final int TILE_SIZE = 100;
-
-    /**
-     * Declares the tile width.
-     */
-    public static final int WIDTH = 3;
-
-    /**
-     * Declares the tile height.
-     */
-    public static final int HEIGHT = 2;
-
-    /**
-     * Make a tile array which represents the board cells.
-     * @see Tile
-     */
-    public static Tile[][] board = new Tile[WIDTH][HEIGHT];
-
+    public final int TILE_SIZE = 100;
 
     /**
      * Creates a pane with size the fits the number of tiles * it's size.
@@ -63,6 +58,8 @@ public class ChessBoardView extends Pane {
      * @return the pane with all content.
      */
     public static Parent createGame() {
+        GameData gameData = new GameData();
+
         //Groups to collect tiles and pieces.
         Group tileGroup = new Group();
         Group pieceGroup = new Group();
@@ -73,13 +70,13 @@ public class ChessBoardView extends Pane {
 
         Label movesLabel = new Label("Moves: ");
         Label moves = new Label("0");
-        getTimer().setTextFill(WHITE);
+        gameData.getTimer().setTextFill(WHITE);
         timerLabel.setTextFill(WHITE);
         movesLabel.setTextFill(WHITE);
         moves.setTextFill(WHITE);
         HBox timerBox = new HBox();
         HBox movesBox = new HBox();
-        timerBox.getChildren().addAll(timerLabel, getTimer());
+        timerBox.getChildren().addAll(timerLabel, gameData.getTimer());
         movesBox.getChildren().addAll(movesLabel, moves);
         movesBox.setTranslateX(237);
 
@@ -87,8 +84,8 @@ public class ChessBoardView extends Pane {
             @Override
             public void handle(long now) {
                 long elapsedMillis = System.currentTimeMillis() - startTime;
-                getTimer().setText(Long.toString(elapsedMillis / 1000));
-                moves.setText(String.valueOf(getNumOfMoves()));
+                gameData.getTimer().setText(Long.toString(elapsedMillis / 1000));
+                moves.setText(String.valueOf(gameData.getNumOfMoves()));
             }
         }.start();
 

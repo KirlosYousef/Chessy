@@ -8,9 +8,17 @@ import Models.Types.MoveType;
 public class MoveResult {
     /**
      * Declares a type of move has done.
+     *
      * @see MoveType
      */
     private MoveType type;
+
+    /**
+     * @param type Sets the type.
+     */
+    public MoveResult(MoveType type) {
+        this.type = type;
+    }
 
     /**
      * @return the type of the movement.
@@ -18,12 +26,5 @@ public class MoveResult {
      */
     public MoveType getType() {
         return type;
-    }
-
-    /**
-     * @param type Sets the type.
-     */
-    public MoveResult(MoveType type){
-        this.type = type;
     }
 }

@@ -15,6 +15,21 @@ public class Player {
     private int score;
 
     /**
+     * Player constructor with name parameter.
+     *
+     * @param name Player's name.
+     */
+    public Player(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Player constructor.
+     */
+    public Player() {
+    }
+
+    /**
      * @return player name.
      * @see #name
      */
@@ -43,18 +58,4 @@ public class Player {
     public void setScore(int score) {
         this.score = score;
     }
-
-    /**
-     * Player constructor with name parameter.
-     *
-     * @param name Player's name.
-     */
-    public Player(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Player constructor.
-     */
-    public Player() {}
 }

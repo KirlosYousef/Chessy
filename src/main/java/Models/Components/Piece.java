@@ -1,61 +1,43 @@
 package Models.Components;
 
 import Models.Types.PieceType;
+import Views.ChessBoardView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 
-
-import static Views.ChessBoardView.TILE_SIZE;
-
 /**
  * Contains the image and the information about the piece.
+ *
  * @see Piece
  */
 public class Piece extends StackPane {
 
+
+    /**
+     * Gets The Tile Size.
+     */
+    private static Integer TILE_SIZE = new ChessBoardView().TILE_SIZE;
     /**
      * Declares a the type of piece.
+     *
      * @see PieceType
      */
     private PieceType type;
-
     /**
      * Declares where the mouse pressed.
      */
     private double mouseX, mouseY;
-
     /**
      * Declares The position of the piece before the movement.
      */
     private double oldX, oldY;
 
     /**
-     * @return the type of the piece.
-     */
-    public PieceType getType() {
-        return type;
-    }
-
-    /**
-     * @return the pixel of x of the piece.
-     */
-    public double getOldX() {
-        return oldX;
-    }
-
-    /**
-     * @return the pixel of y of the piece.
-     */
-    public double getOldY() {
-        return oldY;
-    }
-
-    /**
      * @param type the type of piece.
-     * @param x the x coordinate.
-     * @param y the y coordinate.
+     * @param x    the x coordinate.
+     * @param y    the y coordinate.
      */
     public Piece(PieceType type, int x, int y) {
         this.type = type;
@@ -86,7 +68,29 @@ public class Piece extends StackPane {
     }
 
     /**
+     * @return the type of the piece.
+     */
+    public PieceType getType() {
+        return type;
+    }
+
+    /**
+     * @return the pixel of x of the piece.
+     */
+    public double getOldX() {
+        return oldX;
+    }
+
+    /**
+     * @return the pixel of y of the piece.
+     */
+    public double getOldY() {
+        return oldY;
+    }
+
+    /**
      * Function to move the piece to the new coordinates * the size of the tile.
+     *
      * @param x new x coordinate.
      * @param y new y coordinate.
      */
@@ -99,7 +103,7 @@ public class Piece extends StackPane {
     /**
      * To get back the piece to the old cell (Not to move).
      */
-    public void abortMove(){
+    public void abortMove() {
         relocate(oldX, oldY);
     }
 
