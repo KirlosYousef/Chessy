@@ -3,8 +3,8 @@
 
 ![version](https://img.shields.io/badge/version-1.0.1-yellow)
 ![platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)
-[![GitHub license](https://img.shields.io/github/license/KirlosYousef/ChessBoard)](https://github.com/KirlosYousef/ChessBoard/blob/master/LICENSE)
-[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FKirlosYousef%2FChessBoard)](https://twitter.com/intent/tweet?text=Check-this-out!:&url=https%3A%2F%2Fgithub.com%2FKirlosYousef%2FChessBoard)
+[![GitHub license](https://img.shields.io/github/license/KirlosYousef/Chessy)](https://github.com/KirlosYousef/Chessy/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2FKirlosYousef%2FChessy)](https://twitter.com/intent/tweet?text=Check-this-out!:&url=https%3A%2F%2Fgithub.com%2FKirlosYousef%2FChessy)
 
 <img height="500" src="https://i.imgur.com/yYYgvpn.jpg">
 
